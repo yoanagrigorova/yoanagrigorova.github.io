@@ -1,0 +1,59 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+#scoreContainer {
+    position: absolute;
+    color: white;
+    font-size: x-large;
+}
+
+#scoreContainer p {
+    width: 450px;
+    float: left;
+}
+
+#win,
+#lose {
+    display: inline-block;
+    position: absolute;
+    color: white;
+    top: 190px;
+    left: 250px;
+    font-size: xx-large;
+    opacity: 0;
+    font-family: fantasy;
+    text-align: center;
+}
+
+.restartButton {
+    border: none;
+    height: 30px;
+    width: 60px;
+    border-radius: 5px;
+    background: white;
+    cursor: pointer;
+}
+
+#start {
+    display: inline-block;
+    position: absolute;
+    top: 250px;
+    left: 250px;
+    color: white;
+    cursor: pointer;
+    z-index: 999999;
+}
+
+#start button {
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    height: 70px;
+    width: 300px;
+    background: white;
+    font-size: 40px;
+    font-weight: bold;
+    color: #00011F;
+}
