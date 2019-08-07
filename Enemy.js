@@ -7,14 +7,16 @@
  */
 
 class Enemy extends PIXI.Sprite {
-    constructor(app, parent, index, y = 0, shooter, shields) {
-        super(PIXI.Texture.from("./assets/target.png"));
+    constructor(parent, index, y = 0, picture = "target", liveCount = 2) {
+        super(PIXI.Texture.from("./assets/" + picture + ".png"));
 
         this.height = 50;
         this.width = 50;
 
         this.x = index * (this.width + 20);
         this.y = y;
+        this.points = 50;
+
         this.shooter = shooter;
         this.shields = shields;
 
@@ -23,8 +25,8 @@ class Enemy extends PIXI.Sprite {
 
         this.lives = [];
 
-        for (let i = 0; i < 3; i++) {
-            let live = new Live(app, parent, this.x + (i * 15), this.y + this.height)
+        for (let i = 0; i < liveCount; i++) {
+            let live = new Live(app, parent, this.x + (i * 15) + 5, this.y + this.height)
             this.lives.push(live);
         }
 
@@ -71,7 +73,7 @@ class Enemy extends PIXI.Sprite {
         });
 
         explodeSound.play();
-        let explosion = new Explosion(this.app, this.x + this.parentContainer.x, this.y);
+        let explosion = new Explosion(this.x + this.parentContainer.x, this.y);
         explosion.explode();
     }
 

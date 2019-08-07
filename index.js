@@ -21,6 +21,8 @@ container.y = 30;
 
 // let lostGame = null;
 let restart = null;
+let shooter = null;
+let shields = [];
 
 let winTl = new TimelineLite();
 
@@ -37,8 +39,7 @@ function renderGame() {
     document.getElementById("scoreContainer").style.visibility = "visible";
 
     app.stage.addChild(container);
-    let shooter = new Shooter(app);
-    let shields = [];
+    shooter = new Shooter(app);
 
     for (let i = 0; i < 4; i++) {
         let shield = new Shield(app, app.stage, (i * 200) + 50, shooter.y - 200);
