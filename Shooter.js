@@ -35,6 +35,8 @@ class Shooter extends PIXI.Sprite {
     }
 
     updateLives() {
+        let explosion = new Explosion(this.x - this.width / 2, this.y - this.height / 2);
+        explosion.explode();
         if (this.lives > 0) {
             this.lives--;
             let live = this.livebar.splice(this.lives, 1);
@@ -42,14 +44,12 @@ class Shooter extends PIXI.Sprite {
         }
     }
 
-    isHit(bullet, callback) {
-        let hit = false;
+    isHit(bullet) {
         if ((bullet.x >= this.x - (this.width / 2) && bullet.x <= this.x + (this.width / 2)) &&
             bullet.y >= this.y - (this.height / 2) && bullet.y <= this.y + (this.height / 2)) {
-            hit = true;
+            return true;
         }
-
-        return callback(hit);
+        return false;
     }
 
     renderLives() {
@@ -65,6 +65,7 @@ class Shooter extends PIXI.Sprite {
     remove() {
         this.container.children.length = 0;
         this.parentContainer.stage.removeChild(this);
+
     }
 
     restart() {
