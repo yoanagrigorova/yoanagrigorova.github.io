@@ -1,6 +1,6 @@
 const log = console.log;
 
-let app = new PIXI.Application(900, 700);
+let app = new PIXI.Application();
 
 document.body.appendChild(app.view);
 
@@ -13,11 +13,11 @@ container.y = 30;
 
 let restart = null;
 let shooter = null;
+let enemies = [];
 let shields = [];
 let numOfHits = 0;
 let stoppedTicker = false;
 let threeBullets = false;
-
 
 let winTl = new TimelineLite();
 
@@ -28,7 +28,7 @@ let tl = new TimelineLite({
 let tlContainer = new TimelineMax({
     repeat: -1,
     yoyo: true
-})
+});
 
 let shoot = new Howl({
     src: ['./assets/sounds/shoot.wav'],
@@ -49,11 +49,10 @@ function renderGame() {
     renderEnemies(shooter, shields);
 
     tlContainer.to(container, 10, {
-        x: app.screen.width - container.width
+        x: app.screen.width - container.width,
     })
 
     tl.set("#score", { text: shooter.score.toString() });
-
 
     let left = keyboard(37),
         right = keyboard(39),
@@ -81,10 +80,12 @@ function renderGame() {
 
     space.press = () => {
         let hit = false;
-        if (threeBullets) {
-            shootThreeBullets()
-        } else {
-            shootOneBullet(hit);
+        if (shooter.lives > 0) {
+            if (threeBullets) {
+                shootThreeBullets()
+            } else {
+                shootOneBullet(hit);
+            }
         }
     }
 

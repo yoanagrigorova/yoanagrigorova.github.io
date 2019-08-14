@@ -7,7 +7,7 @@ class Enemy extends PIXI.Sprite {
 
         this.x = index * (this.width + 20);
         this.y = y;
-        this.points = 50;
+        this.points = 20;
 
         this.shooter = shooter;
         this.shields = shields;
@@ -26,12 +26,6 @@ class Enemy extends PIXI.Sprite {
             parent.addChild(this);
         }
 
-        this.interval = (Math.random() * 12000) + 2000;
-
-        this.stopShooting = setInterval(() => {
-            this.shoot();
-        }, this.interval);
-
         this.explodeSound = new Howl({
             src: ['./assets/sounds/invaderkilled.wav'],
             volume: 0.25,
@@ -42,8 +36,8 @@ class Enemy extends PIXI.Sprite {
         if (this.lives.length > 1) {
             let live = this.lives.splice(this.lives.length - 1, 1);
             live[0].remove();
-            // this.explodeSound.play();
-            this.explode();
+            this.explodeSound.play();
+            // this.explode();
         } else if (this.lives.length === 1) {
             this.remove();
             if (this.lives[0]) {
@@ -64,7 +58,6 @@ class Enemy extends PIXI.Sprite {
         this.parentContainer.removeChild(this);
         this.explode();
         this.lives.forEach(live => live.remove());
-        clearInterval(this.stopShooting);
     }
 
     explode() {
@@ -88,7 +81,9 @@ class Enemy extends PIXI.Sprite {
 
             if (me.shooter.isHit(bullet)) {
                 me.app.ticker.remove(shoot);
-                me.shooter.updateLives();
+                me.shooter.updateLives(bullet);
+                threeBullets = false;
+                numOfHits = 0;
                 bullet.remove();
             }
 
@@ -107,13 +102,9 @@ class Enemy extends PIXI.Sprite {
                 renederLostGame(winTl, me.shooter, restart);
             }
 
-            if (me.shooter.lostGame) {
+            if (me.shooter.lostGame || bullet.y >= app.screen.height) {
                 bullet.remove();
-                clearInterval(me.stopShooting);
-            }
-
-            if (bullet.y > app.screen.height) {
-                bullet.remove();
+                me.app.ticker.remove(shoot);
             }
         })
     }
