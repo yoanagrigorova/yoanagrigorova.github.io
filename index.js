@@ -52,35 +52,35 @@ function renderGame() {
         x: app.screen.width - container.width,
     })
 
-    tl.set("#score", { text: shooter.score.toString() });
+    tl.to("#score", 0.1, { text: shooter.score.toString() });
 
     let left = keyboard(37),
         right = keyboard(39),
         space = keyboard(32);
 
     left.press = () => {
-        if (shooter.x >= 20) {
-            shooter.vx = -10;
+        if (shooter.getX() >= 20) {
+            shooter.setVx(-10);
         } else {
-            shooter.vx = 0;
+            shooter.setVx(0);
         }
     }
 
     left.release = () => {
-        shooter.vx = 0;
+        shooter.setVx(0);
     }
 
     right.press = () => {
-        shooter.vx = 10;
+        shooter.setVx(10);
     }
 
     right.release = () => {
-        shooter.vx = 0;
+        shooter.setVx(0);
     }
 
     space.press = () => {
         let hit = false;
-        if (shooter.lives > 0) {
+        if (shooter.getLives() > 0) {
             if (threeBullets) {
                 shootThreeBullets()
             } else {
@@ -100,7 +100,7 @@ function renderGame() {
     }
 
     function play(delta) {
-        if ((left.isDown && shooter.x - shooter.width / 2 > 0) || (right.isDown && shooter.x + shooter.width / 2 < app.screen.width)) {
+        if ((left.isDown && shooter.getX() - shooter.getWidth() / 2 > 0) || (right.isDown && shooter.getX() + shooter.getWidth() / 2 < app.screen.width)) {
             shooter.x += shooter.vx;
         }
     }
