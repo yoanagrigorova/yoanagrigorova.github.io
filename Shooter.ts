@@ -1,61 +1,92 @@
 class Shooter extends PIXI.Sprite {
+    private width:number;
+    private height:number;
+    private vx:number;
+    private _score:number;
+    private _lostGame:boolean;
+    private lives:number;
+    private livebar:Live[];
+    private x:number;
+    private y:number;
+    private parentContainer:any;
+    private container:any;
+
     constructor(parent) {
         super(PIXI.Texture.from("./assets/shooter.png"));
+
         this.width = 60;
         this.height = 60;
         this.anchor.set(0.5);
         this.vx = 0;
         this._score = 0;
         this._lostGame = false;
+
         this.lives = 5;
         this.livebar = [];
+
         this.parentContainer = parent;
         this.container = new PIXI.Container();
+
         this.y = parent.screen.height - (this.height / 2);
         this.x = parent.screen.width / 2;
         parent.stage.addChild(this);
+
         this.renderLives();
     }
-    get positionX() {
+
+    get positionX(){
         return this.x;
     }
-    get positionY() {
+
+    get positionY(){
         return this.y;
     }
-    set positionX(value) {
+
+    set positionX(value){
         this.x = value;
     }
-    get liveCount() {
+
+    get liveCount(){
         return this.lives;
     }
-    get score() {
+
+    get score(){
         return this._score;
     }
-    set score(value) {
+
+    set score(value){
         this._score = value;
     }
-    set velocity(vx) {
-        this.vx = vx;
+
+    set velocity(vx:number){
+        this.vx=vx;
     }
-    get velocity() {
+
+    get velocity(){
         return this.vx;
     }
-    getWidth() {
+
+    getWidth(){
         return this._width;
     }
-    getHeight() {
+
+    getHeight(){
         return this._height;
     }
-    get lostGame() {
+
+    get lostGame(){
         return this._lostGame;
     }
-    set lostGame(value) {
+
+    set lostGame(value){
         this._lostGame = value;
     }
-    updateScore(points) {
-        this.score += points;
+
+    updateScore(points:number){
+        this.score+=points;
     }
-    updateLives(bullet) {
+
+    updateLives(bullet:Bullet):void {
         let explosion = new Explosion(bullet.positionX, bullet.positionY);
         explosion.anchor.set(0.5);
         explosion.explode();
@@ -65,14 +96,16 @@ class Shooter extends PIXI.Sprite {
             live[0].remove();
         }
     }
-    isHit(bullet) {
+
+    isHit(bullet:Bullet):boolean {
         if ((bullet.positionX >= this.x - (this.width / 2) && bullet.positionX <= this.x + (this.width / 2)) &&
             bullet.positionY >= this.y - (this.height / 2) && bullet.positionY <= this.y + (this.height / 2) && enemies.length) {
             return true;
         }
         return false;
     }
-    renderLives() {
+
+    private renderLives():void {
         this.container.x = 250;
         this.container.y = 5;
         this.parentContainer.stage.addChild(this.container);
@@ -81,12 +114,14 @@ class Shooter extends PIXI.Sprite {
             this.livebar.push(live);
         }
     }
-    remove() {
+
+    remove():void {
         this.lives--;
         this.container.children.length = 0;
         this.parentContainer.stage.removeChild(this);
     }
-    restart() {
+
+    restart():void {
         this.remove();
         this.lives = 5;
         this.livebar = [];
